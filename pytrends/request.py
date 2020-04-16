@@ -7,13 +7,17 @@ from datetime import datetime, timedelta
 
 import pandas as pd
 import requests
+import pandas
 
-
-
-from pandas.io.json._normalize import nested_to_record
+# from pandas.io.json._normalize import nested_to_record
 from requests.packages.urllib3.util.retry import Retry
 
 from pytrends import exceptions
+
+if pd.__version__[0]=='0':
+    from pandas.io.json._normalize import nested_to_record
+else:
+    from pandas.io.json._normalize import nested_to_record
 
 if sys.version_info[0] == 2:  # Python 2
     from urllib import quote
@@ -24,6 +28,12 @@ else:  # Python 3
 class TrendReq(object):
     """
     Google Trends API
+
+    <script type="text/javascript"
+    src="https://ssl.gstatic.com/trends_nrtr/2152_RC04/embed_loader.js"></script>
+    <script type="text/javascript"> trends.embed.renderExploreWidget("TIMESERIES", {"comparisonItem":[{"keyword":"/m/0dl567","geo":"US","time":"now 7-d"},{"keyword":"/m/0261x8t","geo":"US","time":"now 7-d"}],"category":0,"property":""},
+     {"exploreQuery":"q=%2Fm%2F0dl567,%2Fm%2F0261x8t&date=now%207-d&geo=US",
+     "guestPath":"https://trends.google.com:443/trends/embed/"}); </script>
     """
     GET_METHOD = 'get'
     POST_METHOD = 'post'
@@ -80,6 +90,8 @@ class TrendReq(object):
                     timeout=self.timeout,
                     proxies=proxy
                 ).cookies.items()))
+
+
             except requests.exceptions.ProxyError:
                 print('Proxy error. Changing IP')
                 if len(self.proxies) > 0:

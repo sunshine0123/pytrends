@@ -15,7 +15,7 @@ from requests.packages.urllib3.util.retry import Retry
 from pytrends import exceptions
 
 if pd.__version__[0]=='0':
-    from pandas.io.json._normalize import nested_to_record
+    from pandas.io.json.normalize import nested_to_record
 else:
     from pandas.io.json._normalize import nested_to_record
 
